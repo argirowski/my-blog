@@ -1,0 +1,23 @@
+# dependencies & build output
+node_modules
+.next
+out
+build
+
+# local sqlite (persist via Docker volume instead)
+data
+
+# git & editor
+.git
+.gitignore
+.cursor
+
+# env (inject at runtime via compose or -e)
+.env*
+!.env.example
+
+# logs & misc
+npm-debug.log*
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
