@@ -65,7 +65,7 @@ export default async function EditBlogPostPage({ params }: Props) {
 
   return (
     <EditPostPageGate>
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8 px-4 py-12 sm:px-6">
+      <div className="flex flex-col gap-8">
         <div>
           <Link
             href={`/blog/${post.id}`}

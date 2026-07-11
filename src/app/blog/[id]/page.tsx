@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PostDetailPageGate>
-      <article className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6">
+      <article className="w-full">
         <Link
           href="/blog"
           className="text-sm font-medium text-zinc-600 underline-offset-4 hover:text-foreground hover:underline dark:text-zinc-400"

@@ -17,7 +17,7 @@ export async function BlogHomePage() {
   const canCreatePost = Boolean(session?.user?.id);
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-10 px-4 py-12 sm:px-6">
+    <div className="flex flex-1 flex-col gap-10">
       <header
         className={
           canCreatePost
