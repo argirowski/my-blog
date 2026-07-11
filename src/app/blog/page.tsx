@@ -7,11 +7,13 @@ import { BlogPageGate } from "@/components/blog-page-gate";
 import { LoggedInToast } from "@/components/logged-in-toast";
 import { PostDeletedToast } from "@/components/post-deleted-toast";
 import { PostUpdatedToast } from "@/components/post-updated-toast";
-
 export const metadata: Metadata = {
   title: "Posts",
   description: "Browse all posts.",
 };
+
+/** ISR: regenerate cached blog list at most once per minute. */
+export const revalidate = 60;
 
 export default function BlogIndexPage() {
   return (

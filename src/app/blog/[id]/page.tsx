@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
-import { authOptions } from "@/lib/auth-options";
-import { PostDetailActions } from "@/components/post-detail-actions";
+import { PostDetailOwnerActions } from "@/components/post-detail-owner-actions";
 import { PostDetailPageGate } from "@/components/post-detail-page-gate";
-import { getPostById } from "@/lib/posts";
+import { getAllPosts, getPostById } from "@/lib/posts";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
+
+/** ISR: regenerate cached post pages at most once per minute. */
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return getAllPosts().map((post) => ({
+    id: String(post.id),
+  }));
+}
 
 function parsePostId(idParam: string): number | null {
   const id = Number(idParam);
@@ -54,17 +61,8 @@ export default async function BlogPostPage({ params }: Props) {
   const id = parsePostId(idParam);
   if (id == null) notFound();
 
-  const session = await getServerSession(authOptions);
   const post = getPostById(id);
   if (!post) notFound();
-
-  const viewerRaw = session?.user?.id ? Number(session.user.id) : NaN;
-  const viewerId =
-    Number.isInteger(viewerRaw) && viewerRaw >= 1 ? viewerRaw : NaN;
-  const canModifyPost =
-    Number.isInteger(viewerId) &&
-    post.authorUserId != null &&
-    viewerId === post.authorUserId;
 
   return (
     <PostDetailPageGate>
@@ -91,7 +89,10 @@ export default async function BlogPostPage({ params }: Props) {
             {post.content}
           </p>
         </div>
-        {canModifyPost ? <PostDetailActions postId={post.id} /> : null}
+        <PostDetailOwnerActions
+          postId={post.id}
+          authorUserId={post.authorUserId}
+        />
       </article>
     </PostDetailPageGate>
   );
