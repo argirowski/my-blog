@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -7,6 +8,11 @@ import { NewPostForm } from "@/components/new-post-form";
 import { NewPostPageGate } from "@/components/new-post-page-gate";
 
 const CALLBACK_URL = "/blog/new";
+
+export const metadata: Metadata = {
+  title: "New post",
+  robots: { index: false, follow: false },
+};
 
 export default async function NewBlogPostPage() {
   const session = await getServerSession(authOptions);

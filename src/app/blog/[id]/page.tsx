@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
@@ -11,6 +12,37 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+function parsePostId(idParam: string): number | null {
+  const id = Number(idParam);
+  if (!Number.isInteger(id) || id < 1) return null;
+  return id;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id: idParam } = await params;
+  const id = parsePostId(idParam);
+  if (id == null) {
+    return { title: "Post not found" };
+  }
+
+  const post = getPostById(id);
+  if (!post) {
+    return { title: "Post not found" };
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      publishedTime: post.publishedAt,
+      authors: [post.author],
+    },
+  };
+}
+
 function formatDate(isoDate: string) {
   return new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
@@ -19,8 +51,8 @@ function formatDate(isoDate: string) {
 
 export default async function BlogPostPage({ params }: Props) {
   const { id: idParam } = await params;
-  const id = Number(idParam);
-  if (!Number.isInteger(id) || id < 1) notFound();
+  const id = parsePostId(idParam);
+  if (id == null) notFound();
 
   const session = await getServerSession(authOptions);
   const post = getPostById(id);

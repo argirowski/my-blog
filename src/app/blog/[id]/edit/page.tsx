@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
 
@@ -11,10 +12,32 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+const privatePageRobots: Metadata["robots"] = { index: false, follow: false };
+
+function parsePostId(idParam: string): number | null {
+  const id = Number(idParam);
+  if (!Number.isInteger(id) || id < 1) return null;
+  return id;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id: idParam } = await params;
+  const id = parsePostId(idParam);
+  if (id == null) {
+    return { title: "Edit post", robots: privatePageRobots };
+  }
+
+  const post = getPostById(id);
+  return {
+    title: post ? `Edit: ${post.title}` : "Edit post",
+    robots: privatePageRobots,
+  };
+}
+
 export default async function EditBlogPostPage({ params }: Props) {
   const { id: idParam } = await params;
-  const id = Number(idParam);
-  if (!Number.isInteger(id) || id < 1) notFound();
+  const id = parsePostId(idParam);
+  if (id == null) notFound();
 
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {

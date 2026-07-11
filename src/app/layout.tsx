@@ -7,6 +7,7 @@ import { AuthSessionProvider } from "@/components/auth-session-provider";
 import { NavigationLoader } from "@/components/navigation-loader";
 import { SiteHeader } from "@/components/site-header";
 import { authOptions } from "@/lib/auth-options";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,6 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: getSiteUrl(),
   title: {
     default: "My Blog",
     template: "%s · My Blog",
