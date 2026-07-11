@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 
 import { PostDetailOwnerActions } from "@/components/post-detail-owner-actions";
 import { PostDetailPageGate } from "@/components/post-detail-page-gate";
+import { PostArticleJsonLd } from "@/components/post-article-json-ld";
+import { OG_IMAGE_SIZE } from "@/lib/og-image";
 import { getAllPosts, getPostById } from "@/lib/posts";
 
 type Props = {
@@ -40,12 +42,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: `/blog/${post.id}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
       publishedTime: post.publishedAt,
       authors: [post.author],
+      images: [
+        {
+          url: `/blog/${post.id}/opengraph-image`,
+          width: OG_IMAGE_SIZE.width,
+          height: OG_IMAGE_SIZE.height,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [`/blog/${post.id}/opengraph-image`],
     },
   };
 }
@@ -66,6 +85,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <PostDetailPageGate>
+      <PostArticleJsonLd post={post} />
       <article className="w-full">
         <Link
           href="/blog"

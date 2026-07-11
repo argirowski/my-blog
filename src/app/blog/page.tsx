@@ -10,6 +10,15 @@ import { PostUpdatedToast } from "@/components/post-updated-toast";
 export const metadata: Metadata = {
   title: "Posts",
   description: "Browse all posts.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Posts",
+    description: "Browse all posts.",
+    type: "website",
+    url: "/blog",
+  },
 };
 
 /** ISR: regenerate cached blog list at most once per minute. */

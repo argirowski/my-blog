@@ -27,6 +27,19 @@ export const metadata: Metadata = {
     template: "%s · My Blog",
   },
   description: "Read, write, and connect.",
+  openGraph: {
+    siteName: "My Blog",
+    type: "website",
+    title: "My Blog",
+    description: "Read, write, and connect.",
+    images: ["/opengraph-image"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "My Blog",
+    description: "Read, write, and connect.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default async function RootLayout({
