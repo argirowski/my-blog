@@ -13,6 +13,7 @@ RUN npm ci
 
 FROM deps AS builder
 COPY . .
+RUN mkdir -p public
 ENV NODE_ENV=production
 RUN npm run build
 
