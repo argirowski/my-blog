@@ -1,10 +1,10 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 import { authOptions } from "@/lib/auth-options";
 import { insertPost } from "@/lib/db";
+import { revalidatePostCaches } from "@/lib/revalidate-post-caches";
 import {
   newPostFormSchema,
   type NewPostFormValues,
@@ -55,8 +55,7 @@ export async function createPostAction(
     authorUserId,
   });
 
-  revalidatePath("/blog");
-  revalidatePath(`/blog/${id}`);
+  revalidatePostCaches(id);
 
   return { success: true, id };
 }

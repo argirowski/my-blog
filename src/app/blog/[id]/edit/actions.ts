@@ -1,10 +1,11 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 import { authOptions } from "@/lib/auth-options";
-import { getPostById, updatePostOwnedBy } from "@/lib/posts";
+import { updatePostOwnedBy } from "@/lib/db";
+import { getPostById } from "@/lib/posts";
+import { revalidatePostCaches } from "@/lib/revalidate-post-caches";
 import {
   newPostFormSchema,
   type NewPostFormValues,
@@ -37,7 +38,7 @@ export async function updatePostAction(
     return { success: false, notFound: true };
   }
 
-  const existing = getPostById(postId);
+  const existing = await getPostById(postId);
   if (!existing) {
     return { success: false, notFound: true };
   }
@@ -76,8 +77,7 @@ export async function updatePostAction(
     return { success: false, notFound: true };
   }
 
-  revalidatePath("/blog");
-  revalidatePath(`/blog/${postId}`);
+  revalidatePostCaches(postId);
 
   return { success: true };
 }

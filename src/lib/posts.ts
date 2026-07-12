@@ -1,9 +1,9 @@
 export type { BlogPost, BlogPostSummary } from "@/lib/post-types";
 
+export { getAllPosts, getPostById } from "@/lib/cached-posts";
+
 export {
   deletePostOwnedBy,
-  getAllPosts,
-  getPostById,
   insertPost,
   type InsertPostInput,
   type PostContentFields,

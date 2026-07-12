@@ -9,7 +9,7 @@ function formatDate(isoDate: string) {
 }
 
 export async function BlogHomePage() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   return (
     <div className="flex flex-1 flex-col gap-10">

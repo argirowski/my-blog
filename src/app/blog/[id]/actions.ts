@@ -1,10 +1,11 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { revalidatePath } from "next/cache";
 
 import { authOptions } from "@/lib/auth-options";
-import { deletePostOwnedBy, getPostById } from "@/lib/posts";
+import { deletePostOwnedBy } from "@/lib/db";
+import { getPostById } from "@/lib/posts";
+import { revalidatePostCaches } from "@/lib/revalidate-post-caches";
 
 export type DeletePostResult =
   | { ok: true }
@@ -25,7 +26,7 @@ export async function deletePostAction(id: number): Promise<DeletePostResult> {
     return { ok: false, error: "invalid" };
   }
 
-  const existing = getPostById(id);
+  const existing = await getPostById(id);
   if (!existing) {
     return { ok: false, error: "not_found" };
   }
@@ -41,7 +42,6 @@ export async function deletePostAction(id: number): Promise<DeletePostResult> {
     return { ok: false, error: "not_found" };
   }
 
-  revalidatePath("/blog");
-  revalidatePath(`/blog/${id}`);
+  revalidatePostCaches(id);
   return { ok: true };
 }

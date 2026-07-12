@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Edit post", robots: privatePageRobots };
   }
 
-  const post = getPostById(id);
+  const post = await getPostById(id);
   return {
     title: post ? `Edit: ${post.title}` : "Edit post",
     robots: privatePageRobots,
@@ -53,7 +53,7 @@ export default async function EditBlogPostPage({ params }: Props) {
     );
   }
 
-  const post = getPostById(id);
+  const post = await getPostById(id);
   if (!post) notFound();
 
   if (

@@ -16,7 +16,8 @@ type Props = {
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  return getAllPosts().map((post) => ({
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
     id: String(post.id),
   }));
 }
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Post not found" };
   }
 
-  const post = getPostById(id);
+  const post = await getPostById(id);
   if (!post) {
     return { title: "Post not found" };
   }
@@ -80,7 +81,7 @@ export default async function BlogPostPage({ params }: Props) {
   const id = parsePostId(idParam);
   if (id == null) notFound();
 
-  const post = getPostById(id);
+  const post = await getPostById(id);
   if (!post) notFound();
 
   return (

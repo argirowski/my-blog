@@ -22,7 +22,7 @@ export default async function Image({ params }: Props) {
   const id = parsePostId(idParam);
   if (id == null) notFound();
 
-  const post = getPostById(id);
+  const post = await getPostById(id);
   if (!post) notFound();
 
   return renderOgImage({
