@@ -42,6 +42,9 @@ export const metadata: Metadata = {
   },
 };
 
+/** Root layout calls `getServerSession` — dynamic app shell (topic: static vs dynamic). */
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({
   children,
 }: Readonly<{

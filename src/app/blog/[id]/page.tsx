@@ -12,7 +12,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-/** ISR: regenerate cached post pages at most once per minute. */
+/** ISR detail page — SSG at build + revalidate 60s (sections 22–23, 26). */
 export const revalidate = 60;
 
 export async function generateStaticParams() {

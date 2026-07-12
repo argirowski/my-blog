@@ -14,6 +14,9 @@ type Props = {
 
 const privatePageRobots: Metadata["robots"] = { index: false, follow: false };
 
+/** Authoring route — session + ownership check on every request. */
+export const dynamic = "force-dynamic";
+
 function parsePostId(idParam: string): number | null {
   const id = Number(idParam);
   if (!Number.isInteger(id) || id < 1) return null;

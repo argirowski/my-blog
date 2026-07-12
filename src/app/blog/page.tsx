@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-/** ISR: regenerate cached blog list at most once per minute. */
+/** ISR list page — cached HTML, max stale age 60s (sections 22–23, 26). */
 export const revalidate = 60;
 
 export default function BlogIndexPage() {

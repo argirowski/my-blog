@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** Authoring route — session check on every request. */
+export const dynamic = "force-dynamic";
+
 export default async function NewBlogPostPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
